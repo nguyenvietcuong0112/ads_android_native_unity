@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ads.android.nativemedia.unity" >
+
+    <uses-sdk android:minSdkVersion="24" />
+
+    <!-- Permission cần thiết cho AdMob -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:supportsRtl="true" >
+
+        <!--
+             Nếu bạn muốn plugin chứa AdMob App ID thì để ở đây,
+             còn không thì bỏ để Unity manifest khai báo
+        -->
+        <!--
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-xxxxxxxxxxxxxxxx~yyyyyyyyyy"/>
+        -->
+
+    </application>
+
+</manifest>

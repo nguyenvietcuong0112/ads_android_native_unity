@@ -1,0 +1,35 @@
+R_DEF: Internal format may change without notice
+local
+color black
+color purple_200
+color purple_500
+color purple_700
+color teal_200
+color teal_700
+color white
+drawable ad_text
+drawable bg_btn_install_intro2
+drawable ic_close_app
+drawable ic_launcher_background
+drawable ic_launcher_foreground
+id ad_app_icon
+id ad_badge
+id ad_body
+id ad_call_to_action
+id ad_headline
+id ad_media
+id ad_unit_content
+id close
+id native_ad_view
+id skip_container
+id skip_count
+id skip_progress
+id skip_text
+id topOfNative
+layout layout_native_ads
+layout native_full_screen
+mipmap ic_launcher
+mipmap ic_launcher_round
+string app_name
+xml backup_rules
+xml data_extraction_rules

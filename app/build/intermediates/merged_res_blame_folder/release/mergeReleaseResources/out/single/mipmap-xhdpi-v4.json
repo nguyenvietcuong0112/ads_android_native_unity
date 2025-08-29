@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "com.ads.android.nativemedia.unity.app-release-41:/mipmap-xhdpi-v4/ic_launcher.webp",
+        "source": "com.ads.android.nativemedia.unity.app-main-42:/mipmap-xhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.ads.android.nativemedia.unity.app-release-41:/mipmap-xhdpi-v4/ic_launcher_round.webp",
+        "source": "com.ads.android.nativemedia.unity.app-main-42:/mipmap-xhdpi/ic_launcher_round.webp"
+    }
+]

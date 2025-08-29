@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "com.ads.android.nativemedia.unity.app-release-41:/color-night-v8/material_timepicker_clockface.xml",
+        "source": "com.ads.android.nativemedia.unity.app-material-1.12.0-23:/color-night-v8/material_timepicker_clockface.xml"
+    },
+    {
+        "merged": "com.ads.android.nativemedia.unity.app-release-41:/color-night-v8/material_timepicker_modebutton_tint.xml",
+        "source": "com.ads.android.nativemedia.unity.app-material-1.12.0-23:/color-night-v8/material_timepicker_modebutton_tint.xml"
+    },
+    {
+        "merged": "com.ads.android.nativemedia.unity.app-release-41:/color-night-v8/material_timepicker_button_stroke.xml",
+        "source": "com.ads.android.nativemedia.unity.app-material-1.12.0-23:/color-night-v8/material_timepicker_button_stroke.xml"
+    }
+]

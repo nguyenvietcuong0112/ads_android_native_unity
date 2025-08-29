@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "com.ads.android.nativemedia.unity.app-release-41:/layout-v26/abc_screen_toolbar.xml",
+        "source": "com.ads.android.nativemedia.unity.app-appcompat-1.7.1-36:/layout-v26/abc_screen_toolbar.xml"
+    },
+    {
+        "merged": "com.ads.android.nativemedia.unity.app-release-41:/layout-v26/mtrl_calendar_month.xml",
+        "source": "com.ads.android.nativemedia.unity.app-material-1.12.0-23:/layout-v26/mtrl_calendar_month.xml"
+    }
+]

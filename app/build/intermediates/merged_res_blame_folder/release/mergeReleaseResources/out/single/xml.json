@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "com.ads.android.nativemedia.unity.app-release-41:/xml/image_share_filepaths.xml",
+        "source": "com.ads.android.nativemedia.unity.app-browser-1.8.0-37:/xml/image_share_filepaths.xml"
+    },
+    {
+        "merged": "com.ads.android.nativemedia.unity.app-release-41:/xml/gma_ad_services_config.xml",
+        "source": "com.ads.android.nativemedia.unity.app-play-services-ads-lite-23.6.0-18:/xml/gma_ad_services_config.xml"
+    },
+    {
+        "merged": "com.ads.android.nativemedia.unity.app-release-41:/xml/backup_rules.xml",
+        "source": "com.ads.android.nativemedia.unity.app-main-42:/xml/backup_rules.xml"
+    },
+    {
+        "merged": "com.ads.android.nativemedia.unity.app-release-41:/xml/data_extraction_rules.xml",
+        "source": "com.ads.android.nativemedia.unity.app-main-42:/xml/data_extraction_rules.xml"
+    }
+]

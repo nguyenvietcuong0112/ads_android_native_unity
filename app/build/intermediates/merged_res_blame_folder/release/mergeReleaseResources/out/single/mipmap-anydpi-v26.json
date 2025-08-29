@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "com.ads.android.nativemedia.unity.app-release-41:/mipmap-anydpi-v26/ic_launcher.xml",
+        "source": "com.ads.android.nativemedia.unity.app-main-42:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "com.ads.android.nativemedia.unity.app-release-41:/mipmap-anydpi-v26/ic_launcher_round.xml",
+        "source": "com.ads.android.nativemedia.unity.app-main-42:/mipmap-anydpi-v26/ic_launcher_round.xml"
+    }
+]

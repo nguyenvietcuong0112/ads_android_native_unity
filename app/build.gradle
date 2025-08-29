@@ -1,0 +1,41 @@
+plugins {
+    alias(libs.plugins.android.library)   // ⬅️ đổi application → library
+}
+
+android {
+    namespace 'com.ads.android.nativemedia.unity'
+    compileSdk 36
+
+    defaultConfig {
+        // ❌ bỏ applicationId vì library không cần
+        minSdk 24
+        targetSdk 36
+
+        consumerProguardFiles "consumer-rules.pro"  // ⬅️ thay cho proguard trong library
+        def formattedDate = new Date().format('MM.dd.yyyy')
+        archivesBaseName = "ads"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+}
+
+dependencies {
+    implementation libs.appcompat
+    implementation libs.material
+    implementation libs.play.services.ads
+    implementation libs.sdp.android
+
+    testImplementation libs.junit
+    androidTestImplementation libs.ext.junit
+    androidTestImplementation libs.espresso.core
+}

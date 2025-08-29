@@ -1,0 +1,36 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.ads.android.nativemedia.unity" >
+4
+5    <uses-sdk android:minSdkVersion="24" />
+6
+7    <!-- Permission cần thiết cho AdMob -->
+8    <uses-permission android:name="android.permission.INTERNET" />
+8-->C:\ads_android_native\app\src\main\AndroidManifest.xml:5:5-66
+8-->C:\ads_android_native\app\src\main\AndroidManifest.xml:5:22-64
+9    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+9-->C:\ads_android_native\app\src\main\AndroidManifest.xml:6:5-78
+9-->C:\ads_android_native\app\src\main\AndroidManifest.xml:6:22-76
+10
+11    <application
+11-->C:\ads_android_native\app\src\main\AndroidManifest.xml:8:5-23:19
+12        android:allowBackup="true"
+12-->C:\ads_android_native\app\src\main\AndroidManifest.xml:9:9-35
+13        android:hardwareAccelerated="true"
+13-->C:\ads_android_native\app\src\main\AndroidManifest.xml:11:9-43
+14        android:supportsRtl="true" >
+14-->C:\ads_android_native\app\src\main\AndroidManifest.xml:10:9-35
+15
+16        <!--
+17             Nếu bạn muốn plugin chứa AdMob App ID thì để ở đây,
+18             còn không thì bỏ để Unity manifest khai báo
+19        -->
+20        <!--
+21        <meta-data
+22            android:name="com.google.android.gms.ads.APPLICATION_ID"
+23            android:value="ca-app-pub-xxxxxxxxxxxxxxxx~yyyyyyyyyy"/>
+24        -->
+25
+26    </application>
+27
+28</manifest>

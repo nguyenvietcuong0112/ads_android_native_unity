@@ -1,0 +1,32 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\ads_android_native\app\src\main\AndroidManifest.xml:2:1-24:12
+INJECTED from C:\ads_android_native\app\src\main\AndroidManifest.xml:2:1-24:12
+	package
+		INJECTED from C:\ads_android_native\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\ads_android_native\app\src\main\AndroidManifest.xml:2:11-69
+uses-permission#android.permission.INTERNET
+ADDED from C:\ads_android_native\app\src\main\AndroidManifest.xml:5:5-66
+	android:name
+		ADDED from C:\ads_android_native\app\src\main\AndroidManifest.xml:5:22-64
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from C:\ads_android_native\app\src\main\AndroidManifest.xml:6:5-78
+	android:name
+		ADDED from C:\ads_android_native\app\src\main\AndroidManifest.xml:6:22-76
+application
+ADDED from C:\ads_android_native\app\src\main\AndroidManifest.xml:8:5-23:19
+	android:supportsRtl
+		ADDED from C:\ads_android_native\app\src\main\AndroidManifest.xml:10:9-35
+	android:hardwareAccelerated
+		ADDED from C:\ads_android_native\app\src\main\AndroidManifest.xml:11:9-43
+	android:allowBackup
+		ADDED from C:\ads_android_native\app\src\main\AndroidManifest.xml:9:9-35
+uses-sdk
+INJECTED from C:\ads_android_native\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\ads_android_native\app\src\main\AndroidManifest.xml
+INJECTED from C:\ads_android_native\app\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from C:\ads_android_native\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\ads_android_native\app\src\main\AndroidManifest.xml
