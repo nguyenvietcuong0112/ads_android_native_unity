@@ -1,6 +1,7 @@
 package com.ads.android.nativemedia.unity;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
 
@@ -10,9 +11,7 @@ import com.google.android.gms.ads.nativead.NativeAdView;
 
 public class NativeFullScreenManager extends BaseAdManager {
 
-    private boolean enableCase1 = true;
-    private boolean enableCase2 = true;
-    private boolean enableCase3 = true;
+    private int mode;
 
     // Helper method để convert int mode thành boolean array
     private boolean[] parseCloseButtonMode(int mode) {
@@ -33,18 +32,12 @@ public class NativeFullScreenManager extends BaseAdManager {
     }
 
     public void loadAd(String adUnitId) {
-        loadAd(adUnitId, true, true, true);
+        loadAd(adUnitId, 1);
     }
+
 
     public void loadAd(String adUnitId, int mode) {
-        boolean[] modes = parseCloseButtonMode(mode);
-        loadAd(adUnitId, modes[0], modes[1], modes[2]);
-    }
-
-    public void loadAd(String adUnitId, boolean enableCase1, boolean enableCase2, boolean enableCase3) {
-        this.enableCase1 = enableCase1;
-        this.enableCase2 = enableCase2;
-        this.enableCase3 = enableCase3;
+        this.mode = mode;
 
         activity.runOnUiThread(() -> {
             // Tạo layout params trước khi load ad
@@ -58,36 +51,54 @@ public class NativeFullScreenManager extends BaseAdManager {
                         if (nativeAd != null) nativeAd.destroy();
                         nativeAd = unifiedNativeAd;
 
-                        notifyAdLoaded();
+                        nativeAd.setOnPaidEventListener(adValue -> {
+                            long micros = adValue.getValueMicros();
+                            String currency =  adValue.getCurrencyCode();
+
+                            // Chỉ log valueMicros
+                            Log.i("AdRevenue", String.valueOf(micros));
+
+                            // Chỉ gửi valueMicros sang Unity
+                            notifyAdRevenuePaid("nativeFull",micros,currency);
+                        });
+
+
+                        notifyAdLoaded("nativeFull");
                         showAdFull();
-                        notifyShowSuccess();
-                        notifyAdImpression();
+                        notifyShowSuccess("nativeFull");
+                        notifyAdImpression("nativeFull");
                     })
                     .withAdListener(new com.google.android.gms.ads.AdListener() {
                         @Override
                         public void onAdFailedToLoad(com.google.android.gms.ads.LoadAdError adError) {
-                            notifyFail("Load failed: " + adError.getMessage());
+                            notifyFail("nativeFull","Load failed native full: " + adError.getMessage());
                         }
 
                         @Override
                         public void onAdClicked() {
-                            notifyClicked("Ad clicked");
+                            notifyClicked("nativeFull","Ad clicked native full");
                         }
 
                         @Override
                         public void onAdOpened() {
-                            notifyAdOpened();
+                            notifyAdOpened("nativeFull");
                         }
 
                         @Override
                         public void onAdClosed() {
-                            notifyClosed("Ad closed by system");
+                            notifyClosed("nativeFull","Ad closed by system native full");
                             hideAd();
                         }
                     })
                     .build();
             adLoader.loadAd(new AdRequest.Builder().build());
         });
+    }
+
+    protected void notifyAdRevenuePaid(String adType, long revenue,String currencyCode) {
+        if (listener != null) {
+            listener.onAdRevenuePaid(adType, revenue, currencyCode);
+        }
     }
 
     private void showAdFull() {
@@ -114,19 +125,19 @@ public class NativeFullScreenManager extends BaseAdManager {
         CloseButtonManager.setupCloseButtonNativeFull(adViewLayout, nativeAd, new CloseButtonManager.CloseButtonCallback() {
             @Override
             public void onAdClosed(String message) {
-                notifyClosed(message);
+                notifyClosed("nativeFull",message);
             }
 
             @Override
             public void onAdClicked(String message) {
-                notifyClicked(message);
+                notifyClicked("nativeFull",message);
             }
 
             @Override
             public void onHideAdRequested() {
                 hideAd();
             }
-        }, enableCase1, enableCase2, enableCase3);
+        }, this.mode);
 
         // Thêm kiểm tra null trước khi thêm view
         if (adView != null && adLayoutParams != null) {
@@ -134,13 +145,13 @@ public class NativeFullScreenManager extends BaseAdManager {
                 activity.addContentView(adView, adLayoutParams);
             } catch (Exception e) {
                 e.printStackTrace();
-                notifyFail("Failed to add full screen ad view: " + e.getMessage());
+                notifyFail("nativeFull","Failed to add full screen ad view: " + e.getMessage());
             }
         }
 
         adViewLayout.setOnClickListener(v -> {
-            notifyClicked("Ad view clicked");
-            notifyAdOpened();
+            notifyClicked("nativeFull","Ad view clicked");
+            notifyAdOpened("nativeFull");
         });
     }
 

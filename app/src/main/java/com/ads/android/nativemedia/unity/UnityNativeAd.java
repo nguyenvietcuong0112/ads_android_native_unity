@@ -58,17 +58,13 @@ public class UnityNativeAd {
     }
 
     public void loadAdNativeFull(final String adUnitId) {
-        loadAdNativeFull(adUnitId, true, true, true);
+        loadAdNativeFull(adUnitId, 1);
     }
+
 
     public void loadAdNativeFull(final String adUnitId, final int mode) {
         currentAdType = AdType.FULL_SCREEN;
         nativeFullScreenManager.loadAd(adUnitId, mode);
-    }
-
-    public void loadAdNativeFull(final String adUnitId, final boolean enableCase1, final boolean enableCase2, final boolean enableCase3) {
-        currentAdType = AdType.FULL_SCREEN;
-        nativeFullScreenManager.loadAd(adUnitId, enableCase1, enableCase2, enableCase3);
     }
 
     public void setAdPosition(final int position, final int x, final int y) {

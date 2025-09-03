@@ -1,6 +1,7 @@
 package com.ads.android.nativemedia.unity;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
@@ -11,36 +12,20 @@ import com.google.android.gms.ads.nativead.NativeAdView;
 
 public class NativeAdManager extends BaseAdManager {
 
-    private boolean enableCase1 = true;
-    private boolean enableCase2 = true;
-    private boolean enableCase3 = true;
+    private int mode = 1;
 
     public NativeAdManager(Activity activity) {
         super(activity);
     }
 
     // Helper method để convert int mode thành boolean array
-    private boolean[] parseCloseButtonMode(int mode) {
-        String modeStr = String.valueOf(mode);
-        boolean enableCase1 = modeStr.contains("1");
-        boolean enableCase2 = modeStr.contains("2");
-        boolean enableCase3 = modeStr.contains("3");
-        return new boolean[]{enableCase1, enableCase2, enableCase3};
-    }
-
     public void loadAd(String adUnitId, AdPosition position) {
         loadAd(adUnitId, position, 1);
     }
 
-    public void loadAd(String adUnitId, AdPosition position, int mode) {
-        //boolean[] modes = parseCloseButtonMode(mode);
-        loadAd(adUnitId, position, mode);
-    }
 
-    public void loadAd(String adUnitId, AdPosition position, boolean enableCase1, boolean enableCase2, boolean enableCase3) {
-        this.enableCase1 = enableCase1;
-        this.enableCase2 = enableCase2;
-        this.enableCase3 = enableCase3;
+    public void loadAd(String adUnitId, AdPosition position,final int mode) {
+        this.mode = mode;
 
         activity.runOnUiThread(() -> {
             // Tạo layout params trước khi load ad
@@ -51,36 +36,55 @@ public class NativeAdManager extends BaseAdManager {
                         if (nativeAd != null) nativeAd.destroy();
                         nativeAd = unifiedNativeAd;
 
-                        notifyAdLoaded();
+                        nativeAd.setOnPaidEventListener(adValue -> {
+                            long micros = adValue.getValueMicros();
+                            String currency =  adValue.getCurrencyCode();
+
+                            // Chỉ log valueMicros
+                            Log.i("AdRevenue", String.valueOf(micros));
+
+                            // Chỉ gửi valueMicros sang Unity
+                            notifyAdRevenuePaid("nativeCollab",micros,currency);
+                        });
+
+
+                        notifyAdLoaded("nativeCollab");
                         showAd();
-                        notifyShowSuccess();
-                        notifyAdImpression();
+                        notifyShowSuccess("nativeCollab");
+                        notifyAdImpression("nativeCollab");
                     })
                     .withAdListener(new com.google.android.gms.ads.AdListener() {
                         @Override
                         public void onAdFailedToLoad(com.google.android.gms.ads.LoadAdError adError) {
-                            notifyFail("Load failed: " + adError.getMessage());
+                            notifyFail("nativeCollab","Load failed: " + adError.getMessage());
                         }
 
                         @Override
                         public void onAdClicked() {
-                            notifyClicked("Ad clicked");
+                            notifyClicked("nativeCollab","Ad clicked");
                         }
 
                         @Override
                         public void onAdOpened() {
-                            notifyAdOpened();
+                            notifyAdOpened("nativeCollab");
                         }
 
                         @Override
                         public void onAdClosed() {
-                            notifyClosed("Ad closed by system");
+                            notifyClosed("nativeCollab","Ad closed by system");
                             hideAd();
                         }
+
                     })
                     .build();
             adLoader.loadAd(new AdRequest.Builder().build());
         });
+    }
+
+    protected void notifyAdRevenuePaid(String adType, long revenue,String currencyCode) {
+        if (listener != null) {
+            listener.onAdRevenuePaid(adType, revenue, currencyCode);
+        }
     }
 
     private void setupLayoutParams(AdPosition position) {
@@ -137,12 +141,12 @@ public class NativeAdManager extends BaseAdManager {
         CloseButtonManager.setupCloseButton(adViewLayout, nativeAd, new CloseButtonManager.CloseButtonCallback() {
             @Override
             public void onAdClosed(String message) {
-                notifyClosed(message);
+                notifyClosed("nativeCollab",message);
             }
 
             @Override
             public void onAdClicked(String message) {
-                notifyClicked(message);
+                notifyClicked("nativeCollab",message);
             }
 
             @Override
@@ -157,13 +161,13 @@ public class NativeAdManager extends BaseAdManager {
                 activity.addContentView(adView, adLayoutParams);
             } catch (Exception e) {
                 e.printStackTrace();
-                notifyFail("Failed to add ad view: " + e.getMessage());
+                notifyFail("nativeCollab","Failed to add ad view: " + e.getMessage());
             }
         }
 
         adViewLayout.setOnClickListener(v -> {
-            notifyClicked("Ad view clicked");
-            notifyAdOpened();
+            notifyClicked("nativeCollab","Ad view clicked");
+            notifyAdOpened("nativeCollab");
         });
     }
 

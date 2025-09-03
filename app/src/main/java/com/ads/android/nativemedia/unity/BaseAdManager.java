@@ -32,32 +32,32 @@ public abstract class BaseAdManager {
     }
 
     // Protected helper methods
-    protected void notifyAdLoaded() {
-        if (listener != null) listener.onAdLoaded("Native ad loaded successfully");
+    protected void notifyAdLoaded(String adType) {
+        if (listener != null) listener.onAdLoaded(adType,"Native ad loaded successfully");
     }
 
-    protected void notifyShowSuccess() {
-        if (listener != null) listener.onAdShowSuccess("NativeAd shown");
+    protected void notifyShowSuccess(String adType) {
+        if (listener != null) listener.onAdShowSuccess(adType,"NativeAd shown");
     }
 
-    protected void notifyAdImpression() {
-        if (listener != null) listener.onAdImpression("Ad impression recorded");
+    protected void notifyAdImpression(String adType) {
+        if (listener != null) listener.onAdImpression(adType,"Ad impression recorded");
     }
 
-    protected void notifyAdOpened() {
-        if (listener != null) listener.onAdOpened("Ad opened");
+    protected void notifyAdOpened(String adType) {
+        if (listener != null) listener.onAdOpened(adType,"Ad opened");
     }
 
-    protected void notifyClosed(String msg) {
-        if (listener != null) listener.onAdClosed(msg);
+    protected void notifyClosed(String adType,String msg) {
+        if (listener != null) listener.onAdClosed(adType,msg);
     }
 
-    protected void notifyClicked(String msg) {
-        if (listener != null) listener.onAdClicked(msg);
+    protected void notifyClicked(String adType,String msg) {
+        if (listener != null) listener.onAdClicked(adType,msg);
     }
 
-    protected void notifyFail(String msg) {
-        if (listener != null) listener.onAdShowFail(msg);
+    protected void notifyFail(String adType,String msg) {
+        if (listener != null) listener.onAdShowFail(adType,msg);
     }
 
     // Thêm phương thức để kiểm tra xem ad có đang hiển thị không

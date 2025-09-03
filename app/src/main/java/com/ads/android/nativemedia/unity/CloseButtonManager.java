@@ -156,15 +156,12 @@ public class CloseButtonManager {
     }
 
     public static void setupCloseButtonNativeFull(NativeAdView adViewLayout, NativeAd nativeAd, CloseButtonCallback callback) {
-        setupCloseButtonNativeFull(adViewLayout, nativeAd, callback, true, true, true);
+        setupCloseButtonNativeFull(adViewLayout, nativeAd, callback, 1);
     }
+
+
 
     public static void setupCloseButtonNativeFull(NativeAdView adViewLayout, NativeAd nativeAd, CloseButtonCallback callback, int mode) {
-        boolean[] modes = parseCloseButtonMode(mode);
-        setupCloseButtonNativeFull(adViewLayout, nativeAd, callback, modes[0], modes[1], modes[2]);
-    }
-
-    public static void setupCloseButtonNativeFull(NativeAdView adViewLayout, NativeAd nativeAd, CloseButtonCallback callback, boolean enableCase1, boolean enableCase2, boolean enableCase3) {
         ImageView closeBtn = adViewLayout.findViewById(R.id.close);
         TextView skipText = adViewLayout.findViewById(R.id.skip_text);
         ProgressBar countdown = adViewLayout.findViewById(R.id.skip_progress);
@@ -176,20 +173,7 @@ public class CloseButtonManager {
 
         if (closeBtn == null) return;
 
-        // Tạo danh sách các case được enable
-        java.util.List<Integer> enabledCases = new java.util.ArrayList<>();
-        if (enableCase1) enabledCases.add(1);
-        if (enableCase2) enabledCases.add(2);
-        if (enableCase3) enabledCases.add(3);
 
-        // Nếu không có case nào được enable, sử dụng case 1 mặc định
-        int mode;
-        if (enabledCases.isEmpty()) {
-            mode = 1;
-        } else {
-            // Chọn random từ các case được enable
-            mode = enabledCases.get(random.nextInt(enabledCases.size()));
-        }
 
         switch (mode) {
             case 1: // Close ngay lập tức
