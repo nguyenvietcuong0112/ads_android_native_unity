@@ -12,7 +12,7 @@ import com.google.android.gms.ads.nativead.NativeAdView;
 
 public class NativeAdManager extends BaseAdManager {
 
-    private int mode = 1;
+    private int mode;
 
     public NativeAdManager(Activity activity) {
         super(activity);
@@ -153,7 +153,7 @@ public class NativeAdManager extends BaseAdManager {
             public void onHideAdRequested() {
                 hideAd();
             }
-        });
+        },this.mode);
 
         // Thêm kiểm tra null trước khi thêm view
         if (adView != null && adLayoutParams != null) {
