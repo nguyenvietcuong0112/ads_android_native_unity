@@ -10,6 +10,19 @@ import com.google.android.gms.ads.nativead.NativeAdView;
 
 public class NativeFullScreenManager extends BaseAdManager {
 
+    private boolean enableCase1 = true;
+    private boolean enableCase2 = true;
+    private boolean enableCase3 = true;
+
+    // Helper method để convert int mode thành boolean array
+    private boolean[] parseCloseButtonMode(int mode) {
+        String modeStr = String.valueOf(mode);
+        boolean enableCase1 = modeStr.contains("1");
+        boolean enableCase2 = modeStr.contains("2");
+        boolean enableCase3 = modeStr.contains("3");
+        return new boolean[]{enableCase1, enableCase2, enableCase3};
+    }
+
     public NativeFullScreenManager(Activity activity) {
         super(activity);
     }
@@ -20,6 +33,19 @@ public class NativeFullScreenManager extends BaseAdManager {
     }
 
     public void loadAd(String adUnitId) {
+        loadAd(adUnitId, true, true, true);
+    }
+
+    public void loadAd(String adUnitId, int mode) {
+        boolean[] modes = parseCloseButtonMode(mode);
+        loadAd(adUnitId, modes[0], modes[1], modes[2]);
+    }
+
+    public void loadAd(String adUnitId, boolean enableCase1, boolean enableCase2, boolean enableCase3) {
+        this.enableCase1 = enableCase1;
+        this.enableCase2 = enableCase2;
+        this.enableCase3 = enableCase3;
+
         activity.runOnUiThread(() -> {
             // Tạo layout params trước khi load ad
             adLayoutParams = new FrameLayout.LayoutParams(
@@ -73,13 +99,18 @@ public class NativeFullScreenManager extends BaseAdManager {
             );
         }
 
-        adView = LayoutInflater.from(activity).inflate(R.layout.native_full_screen, null);
+        // Random 50/50 giữa 2 layout
+        java.util.Random random = new java.util.Random();
+        boolean useLayout2 = random.nextBoolean(); // 50% true, 50% false
+
+        int layoutResource = useLayout2 ? R.layout.native_full_screen2 : R.layout.native_full_screen;
+        adView = LayoutInflater.from(activity).inflate(layoutResource, null);
         NativeAdView adViewLayout = (NativeAdView) adView;
 
         // Setup ad views for full screen layout
         AdViewHelper.setupFullScreenAdView(adViewLayout, nativeAd);
 
-        // Setup close button với callback mới
+        // Setup close button với callback mới, truyền bool
         CloseButtonManager.setupCloseButtonNativeFull(adViewLayout, nativeAd, new CloseButtonManager.CloseButtonCallback() {
             @Override
             public void onAdClosed(String message) {
@@ -95,7 +126,7 @@ public class NativeFullScreenManager extends BaseAdManager {
             public void onHideAdRequested() {
                 hideAd();
             }
-        });
+        }, enableCase1, enableCase2, enableCase3);
 
         // Thêm kiểm tra null trước khi thêm view
         if (adView != null && adLayoutParams != null) {

@@ -24,7 +24,21 @@ public class CloseButtonManager {
         void onHideAdRequested(); // Thêm method mới để yêu cầu ẩn ad
     }
 
+    // Helper method để convert int mode thành boolean array
+    private static boolean[] parseCloseButtonMode(int mode) {
+        String modeStr = String.valueOf(mode);
+        boolean enableCase1 = modeStr.contains("1");
+        boolean enableCase2 = modeStr.contains("2");
+        boolean enableCase3 = modeStr.contains("3");
+        return new boolean[]{enableCase1, enableCase2, enableCase3};
+    }
+
+
     public static void setupCloseButton(NativeAdView adViewLayout, NativeAd nativeAd, CloseButtonCallback callback) {
+        setupCloseButton(adViewLayout, nativeAd, callback, 1);
+    }
+
+    public static void setupCloseButton(NativeAdView adViewLayout, NativeAd nativeAd, CloseButtonCallback callback, int mode) {
         ImageView closeBtn = adViewLayout.findViewById(R.id.close);
         TextView skipText = adViewLayout.findViewById(R.id.skip_text);
         ProgressBar countdown = adViewLayout.findViewById(R.id.skip_progress);
@@ -39,8 +53,6 @@ public class CloseButtonManager {
         if (adClickPosition == -1) {
             adClickPosition = random.nextInt(CLICK_CYCLE);
         }
-
-        int mode = random.nextInt(3) + 1;
 
         switch (mode) {
             case 1: // Close ngay lập tức
@@ -144,6 +156,15 @@ public class CloseButtonManager {
     }
 
     public static void setupCloseButtonNativeFull(NativeAdView adViewLayout, NativeAd nativeAd, CloseButtonCallback callback) {
+        setupCloseButtonNativeFull(adViewLayout, nativeAd, callback, true, true, true);
+    }
+
+    public static void setupCloseButtonNativeFull(NativeAdView adViewLayout, NativeAd nativeAd, CloseButtonCallback callback, int mode) {
+        boolean[] modes = parseCloseButtonMode(mode);
+        setupCloseButtonNativeFull(adViewLayout, nativeAd, callback, modes[0], modes[1], modes[2]);
+    }
+
+    public static void setupCloseButtonNativeFull(NativeAdView adViewLayout, NativeAd nativeAd, CloseButtonCallback callback, boolean enableCase1, boolean enableCase2, boolean enableCase3) {
         ImageView closeBtn = adViewLayout.findViewById(R.id.close);
         TextView skipText = adViewLayout.findViewById(R.id.skip_text);
         ProgressBar countdown = adViewLayout.findViewById(R.id.skip_progress);
@@ -155,91 +176,114 @@ public class CloseButtonManager {
 
         if (closeBtn == null) return;
 
-        int mode = random.nextInt(3) + 1;
+        // Tạo danh sách các case được enable
+        java.util.List<Integer> enabledCases = new java.util.ArrayList<>();
+        if (enableCase1) enabledCases.add(1);
+        if (enableCase2) enabledCases.add(2);
+        if (enableCase3) enabledCases.add(3);
+
+        // Nếu không có case nào được enable, sử dụng case 1 mặc định
+        int mode;
+        if (enabledCases.isEmpty()) {
+            mode = 1;
+        } else {
+            // Chọn random từ các case được enable
+            mode = enabledCases.get(random.nextInt(enabledCases.size()));
+        }
 
         switch (mode) {
-            case 1: // Nút X hiện luôn -> chỉ tắt ads
+            case 1: // Close ngay lập tức
                 closeBtn.setVisibility(View.VISIBLE);
                 closeBtn.setOnClickListener(v -> {
-                    callback.onAdClosed("Closed immediately by user");
-                    callback.onHideAdRequested(); // Thêm dòng này
+                    callback.onAdClosed("Closed by user immediately (NativeFull)");
+                    callback.onHideAdRequested();
                 });
                 break;
 
-            case 2: // Nút X hiện luôn -> bấm ra chợ
+            case 2: // Close thực hiện click vào quảng cáo, rồi ẩn ad
                 closeBtn.setVisibility(View.VISIBLE);
                 View mediaView2 = adViewLayout.findViewById(R.id.ad_media);
                 closeBtn.setOnClickListener(v -> {
                     if (mediaView2 != null) mediaView2.performClick();
-                    callback.onAdClicked("Clicked via close button (go to store)");
+                    callback.onAdClicked("Clicked via close button performClick (NativeFull)");
 
-                    // Ẩn ad ngay sau khi click
-                    new CountDownTimer(500, 500) { // Thời gian chờ ngắn
+                    new CountDownTimer(1000, 1000) {
                         public void onTick(long millisUntilFinished) {}
                         public void onFinish() {
-                            callback.onAdClosed("Closed after store redirect");
-                            callback.onHideAdRequested(); // Thêm dòng này
+                            callback.onAdClosed("Closed after click (NativeFull)");
+                            callback.onHideAdRequested();
                         }
                     }.start();
                 });
                 break;
 
-            case 3: // Ẩn nút X 5s -> đếm ngược Skip ads -> xuất hiện nút X giả
+            case 3: // Đếm ngược 5s xuất hiện X; click countdown cũng mở quảng cáo
                 closeBtn.setVisibility(View.GONE);
-                if (skipText != null) skipText.setVisibility(View.GONE);
 
-// Sau 5s mới hiện skipText và bắt đầu đếm
+                if (countdown != null) {
+                    countdown.setVisibility(View.VISIBLE);
+                    countdown.setMax(5);
+                    countdown.setProgress(0);
+                }
+                if (skipCount != null) {
+                    skipCount.setVisibility(View.VISIBLE);
+                    skipCount.setText("5");
+                }
+                if (skipText != null) {
+                    skipText.setVisibility(View.VISIBLE);
+                }
+
+                View mediaView3 = adViewLayout.findViewById(R.id.ad_media);
+
+                if (countdown != null) {
+                    countdown.setOnClickListener(v -> {
+                        if (mediaView3 != null) mediaView3.performClick();
+                        callback.onAdClicked("Clicked during countdown (NativeFull)");
+                    });
+                }
+                if (skipCount != null) {
+                    skipCount.setOnClickListener(v -> {
+                        if (mediaView3 != null) mediaView3.performClick();
+                        callback.onAdClicked("Clicked during countdown (NativeFull)");
+                    });
+                }
+
                 new CountDownTimer(5000, 1000) {
+                    int counter = 5;
+
                     @Override
                     public void onTick(long millisUntilFinished) {
-                        // 5s chờ đầu tiên -> không làm gì
+                        if (skipCount != null) {
+                            skipCount.setText(String.valueOf(counter));
+                        }
+                        if (countdown != null) {
+                            countdown.setProgress(5 - counter + 1);
+                        }
+                        counter--;
                     }
 
                     @Override
                     public void onFinish() {
-                        // Hiện skipText và bắt đầu đếm ngược 5s
+                        if (countdown != null) {
+                            countdown.setVisibility(View.GONE);
+                            countdown.setOnClickListener(null);
+                        }
+                        if (skipCount != null) {
+                            skipCount.setVisibility(View.GONE);
+                            skipCount.setOnClickListener(null);
+                        }
                         if (skipText != null) {
-                            skipText.setVisibility(View.VISIBLE);
-                            skipText.setText("Skip in 5s");
+                            skipText.setVisibility(View.GONE);
                         }
 
-                        // Bắt đầu đếm ngược 5s tiếp theo
-                        new CountDownTimer(5000, 1000) {
-                            @Override
-                            public void onTick(long millisUntilFinished) {
-                                int secondsRemaining = (int) (millisUntilFinished / 1000);
-                                if (skipText != null) {
-                                    skipText.setText("Skip in " + secondsRemaining + "s");
-                                }
-                            }
-
-                            @Override
-                            public void onFinish() {
-                                // Ẩn skipText
-                                if (skipText != null) {
-                                    skipText.setVisibility(View.GONE);
-                                }
-
-                                // Hiện nút X giả
-                                closeBtn.setVisibility(View.VISIBLE);
-                                View mediaView3 = adViewLayout.findViewById(R.id.ad_media);
-                                closeBtn.setOnClickListener(v -> {
-                                    if (mediaView3 != null) mediaView3.performClick();
-                                    callback.onAdClicked("Fake close clicked -> store");
-                                });
-
-                                // Sau 2s đổi thành X thật
-                                closeBtn.postDelayed(() -> {
-                                    closeBtn.setOnClickListener(v -> {
-                                        callback.onAdClosed("Closed after fake-close phase");
-                                        callback.onHideAdRequested();
-                                    });
-                                }, 2000);
-                            }
-                        }.start();
+                        closeBtn.setVisibility(View.VISIBLE);
+                        closeBtn.setOnClickListener(v -> {
+                            callback.onAdClosed("Closed after countdown (NativeFull)");
+                            callback.onHideAdRequested();
+                        });
                     }
                 }.start();
-
+                break;
         }
     }
 }
