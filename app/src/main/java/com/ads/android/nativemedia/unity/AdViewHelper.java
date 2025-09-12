@@ -12,45 +12,70 @@ import com.google.android.gms.ads.nativead.NativeAdView;
 public class AdViewHelper {
 
     public static void setupNativeAdView(NativeAdView adViewLayout, NativeAd nativeAd) {
+        if (adViewLayout == null || nativeAd == null) {
+            if (adViewLayout != null) {
+                adViewLayout.setVisibility(View.GONE);
+            }
+            return;
+        }
+
         MediaView mediaView = adViewLayout.findViewById(R.id.ad_media);
-        adViewLayout.setMediaView(mediaView);
+        if (mediaView != null) {
+            adViewLayout.setMediaView(mediaView);
+        }
 
         TextView headline = adViewLayout.findViewById(R.id.ad_headline);
-        headline.setText(nativeAd.getHeadline());
-        adViewLayout.setHeadlineView(headline);
+        if (headline != null && nativeAd.getHeadline() != null) {
+            headline.setText(nativeAd.getHeadline());
+            adViewLayout.setHeadlineView(headline);
+        }
 
         ImageView icon = adViewLayout.findViewById(R.id.ad_app_icon);
-        if (nativeAd.getIcon() != null) {
-            icon.setImageDrawable(nativeAd.getIcon().getDrawable());
-        } else {
-            icon.setVisibility(View.GONE);
+        if (icon != null) {
+            if (nativeAd.getIcon() != null) {
+                icon.setImageDrawable(nativeAd.getIcon().getDrawable());
+                icon.setVisibility(View.VISIBLE);
+            } else {
+                icon.setVisibility(View.GONE);
+            }
+            adViewLayout.setIconView(icon);
         }
-        adViewLayout.setIconView(icon);
 
         Button cta = adViewLayout.findViewById(R.id.ad_call_to_action);
-        if (nativeAd.getCallToAction() != null) {
-            cta.setText(nativeAd.getCallToAction());
-            cta.setVisibility(View.VISIBLE);
-        } else {
-            cta.setVisibility(View.GONE);
+        if (cta != null) {
+            if (nativeAd.getCallToAction() != null) {
+                cta.setText(nativeAd.getCallToAction());
+                cta.setVisibility(View.VISIBLE);
+            } else {
+                cta.setVisibility(View.GONE);
+            }
+            adViewLayout.setCallToActionView(cta);
         }
-        adViewLayout.setCallToActionView(cta);
 
         adViewLayout.setNativeAd(nativeAd);
     }
 
     public static void setupFullScreenAdView(NativeAdView adViewLayout, NativeAd nativeAd) {
+        if (adViewLayout == null || nativeAd == null) {
+            if (adViewLayout != null) {
+                adViewLayout.setVisibility(View.GONE);
+            }
+            return;
+        }
+
         MediaView mediaView = adViewLayout.findViewById(R.id.ad_media);
-        adViewLayout.setMediaView(mediaView);
+        if (mediaView != null) {
+            adViewLayout.setMediaView(mediaView);
+        }
 
         TextView headline = adViewLayout.findViewById(R.id.ad_headline);
-        if (nativeAd.getHeadline() != null) {
+        if (headline != null && nativeAd.getHeadline() != null) {
             headline.setText(nativeAd.getHeadline());
             adViewLayout.setHeadlineView(headline);
         }
 
         TextView body = adViewLayout.findViewById(R.id.ad_body);
-        if (nativeAd.getBody() != null) {
+        if (body != null && nativeAd.getBody() != null) {
             body.setText(nativeAd.getBody());
             adViewLayout.setBodyView(body);
         }
@@ -59,6 +84,7 @@ public class AdViewHelper {
         if (icon != null) {
             if (nativeAd.getIcon() != null) {
                 icon.setImageDrawable(nativeAd.getIcon().getDrawable());
+                icon.setVisibility(View.VISIBLE);
             } else {
                 icon.setVisibility(View.GONE);
             }
@@ -66,13 +92,15 @@ public class AdViewHelper {
         }
 
         Button cta = adViewLayout.findViewById(R.id.ad_call_to_action);
-        if (nativeAd.getCallToAction() != null) {
-            cta.setText(nativeAd.getCallToAction());
-            cta.setVisibility(View.VISIBLE);
-        } else {
-            cta.setVisibility(View.GONE);
+        if (cta != null) {
+            if (nativeAd.getCallToAction() != null) {
+                cta.setText(nativeAd.getCallToAction());
+                cta.setVisibility(View.VISIBLE);
+            } else {
+                cta.setVisibility(View.GONE);
+            }
+            adViewLayout.setCallToActionView(cta);
         }
-        adViewLayout.setCallToActionView(cta);
 
         adViewLayout.setNativeAd(nativeAd);
     }

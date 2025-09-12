@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.gms.ads.nativead.NativeAdView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.gms.ads.nativead.NativeAdView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:ignore="MissingDefaultResource">
 
     <RelativeLayout
         android:id="@+id/ad_unit_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#F2F2F5"
+        android:layout_marginHorizontal="@dimen/_120sdp"
         android:orientation="vertical">
 
         <FrameLayout
-            android:id="@+id/frClose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="@dimen/_8sdp"
             android:layout_marginTop="@dimen/_10sdp"
-         >
+            >
 
             <ProgressBar
                 android:id="@+id/skip_progress"

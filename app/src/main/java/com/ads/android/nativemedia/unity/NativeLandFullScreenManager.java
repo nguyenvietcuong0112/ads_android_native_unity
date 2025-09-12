@@ -14,8 +14,7 @@ import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.nativead.NativeAdView;
 
-public class NativeFullScreenManager extends BaseAdManager {
-
+public class NativeLandFullScreenManager extends BaseAdManager {
     private int mode;
     private View loadingView;
     private Handler timeoutHandler;
@@ -24,9 +23,9 @@ public class NativeFullScreenManager extends BaseAdManager {
     private boolean isLoadingTimeout = false;
 
     // Timeout (tăng lên 10s cho full screen ads)
-    private static final int LOADING_TIMEOUT_MS = 15000;
+    private static final int LOADING_TIMEOUT_MS = 10000;
 
-    public NativeFullScreenManager(Activity activity) {
+    public NativeLandFullScreenManager(Activity activity) {
         super(activity);
         timeoutHandler = new Handler(Looper.getMainLooper());
     }
@@ -75,10 +74,7 @@ public class NativeFullScreenManager extends BaseAdManager {
                         cancelTimeout();
 
                         if (isLoadingTimeout) {
-                            if (unifiedNativeAd != null) {
-                                nativeAd = unifiedNativeAd;
-                                showAdFull();
-                            }
+                            if (unifiedNativeAd != null) unifiedNativeAd.destroy();
                             return;
                         }
 
@@ -96,10 +92,9 @@ public class NativeFullScreenManager extends BaseAdManager {
                         // Ẩn loading và show ad
                         hideLoadingScreen();
                         notifyAdLoaded("nativeFull");
-
                         showAdFull();
                         notifyShowSuccess("nativeFull");
-//                        notifyAdImpression("nativeFull");
+                        notifyAdImpression("nativeFull");
                     })
                     .withAdListener(new com.google.android.gms.ads.AdListener() {
                         @Override
@@ -126,12 +121,6 @@ public class NativeFullScreenManager extends BaseAdManager {
                         public void onAdClosed() {
                             notifyClosed("nativeFull", "Ad closed by system native full");
                             hideAd();
-                        }
-
-                        @Override
-                        public void onAdImpression() {
-                            // SDK đã ghi impression thực sự
-                            notifyAdImpression("nativeFull");
                         }
                     })
                     .build();
@@ -244,8 +233,8 @@ public class NativeFullScreenManager extends BaseAdManager {
 
         // Random chọn 1 trong 2 layout
         int layoutResource = new java.util.Random().nextBoolean()
-                ? R.layout.native_full_screen2
-                : R.layout.native_full_screen;
+                ? R.layout.native_full_land_screen2
+                : R.layout.native_full_land_screen;
 
         adView = LayoutInflater.from(activity).inflate(layoutResource, null);
         NativeAdView adViewLayout = (NativeAdView) adView;

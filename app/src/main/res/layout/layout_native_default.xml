@@ -11,47 +11,7 @@
         android:background="#F2F2F5"
         android:orientation="vertical">
 
-        <FrameLayout
-            android:id="@+id/frClose"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="@dimen/_8sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-         >
 
-            <ProgressBar
-                android:id="@+id/skip_progress"
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_25sdp"
-                android:layout_alignParentEnd="true"
-                android:indeterminate="false"
-                android:max="5"
-                android:progress="0"
-                />
-
-            <TextView
-                android:id="@+id/skip_count"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="end"
-                android:layout_marginEnd="@dimen/_6sdp"
-                android:layout_gravity="center"
-                android:text="5"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:textStyle="bold"/>
-        </FrameLayout>
-
-        <ImageView
-            android:id="@+id/close"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_8sdp"
-            android:src="@drawable/ic_close_app"
-            android:visibility="visible" />
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
