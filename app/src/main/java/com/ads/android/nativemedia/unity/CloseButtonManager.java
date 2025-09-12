@@ -240,6 +240,9 @@ public class CloseButtonManager {
                         if (skipCount != null) {
                             skipCount.setText(String.valueOf(counter));
                         }
+                        if (skipText != null) {
+                            skipText.setText("Skip in: " + counter + "s"); // Cập nhật skipText
+                        }
                         if (countdown != null) {
                             countdown.setProgress(5 - counter + 1);
                         }
@@ -248,6 +251,7 @@ public class CloseButtonManager {
 
                     @Override
                     public void onFinish() {
+                        // Ẩn skip UI
                         if (countdown != null) {
                             countdown.setVisibility(View.GONE);
                             countdown.setOnClickListener(null);
@@ -258,12 +262,14 @@ public class CloseButtonManager {
                         }
                         if (skipText != null) {
                             skipText.setVisibility(View.GONE);
+                            skipText.setOnClickListener(null);
                         }
 
+                        // Hiện nút close
                         closeBtn.setVisibility(View.VISIBLE);
                         closeBtn.setOnClickListener(v -> {
-                            callback.onAdClosed("Closed after countdown (NativeFull)");
-                            callback.onHideAdRequested();
+                            callback.onAdClosed("Closed after countdown");
+                            callback.onHideAdRequested(); // Thêm dòng này
                         });
                     }
                 }.start();
