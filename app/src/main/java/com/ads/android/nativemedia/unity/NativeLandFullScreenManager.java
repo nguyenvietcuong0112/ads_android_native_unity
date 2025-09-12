@@ -93,8 +93,6 @@ public class NativeLandFullScreenManager extends BaseAdManager {
                         hideLoadingScreen();
                         notifyAdLoaded("nativeFull");
                         showAdFull();
-                        notifyShowSuccess("nativeFull");
-                        notifyAdImpression("nativeFull");
                     })
                     .withAdListener(new com.google.android.gms.ads.AdListener() {
                         @Override
@@ -102,8 +100,7 @@ public class NativeLandFullScreenManager extends BaseAdManager {
                             cancelTimeout();
                             if (!isLoadingTimeout) {
                                 hideLoadingScreen();
-                                notifyFail("nativeFull",
-                                        "Load failed native full: " + adError.getMessage());
+                                notifyFail("nativeFull", adError.getMessage());
                             }
                         }
 
@@ -119,8 +116,13 @@ public class NativeLandFullScreenManager extends BaseAdManager {
 
                         @Override
                         public void onAdClosed() {
-                            notifyClosed("nativeFull", "Ad closed by system native full");
+                            notifyShowSuccess("nativeFull");
                             hideAd();
+                        }
+                        @Override
+                        public void onAdImpression() {
+                            // SDK đã ghi impression thực sự
+                            notifyAdImpression("nativeFull");
                         }
                     })
                     .build();
@@ -246,7 +248,6 @@ public class NativeLandFullScreenManager extends BaseAdManager {
                     @Override
                     public void onAdClosed(String message) {
                         notifyClosed("nativeFull", message);
-                        hideAd();
                     }
 
                     @Override

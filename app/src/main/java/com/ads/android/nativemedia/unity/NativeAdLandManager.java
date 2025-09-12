@@ -43,13 +43,12 @@ public class NativeAdLandManager extends BaseAdManager {
 
                         notifyAdLoaded("nativeCollab");
                         showAd();
-                        notifyShowSuccess("nativeCollab");
-                        notifyAdImpression("nativeCollab");
+
                     })
                     .withAdListener(new com.google.android.gms.ads.AdListener() {
                         @Override
                         public void onAdFailedToLoad(com.google.android.gms.ads.LoadAdError adError) {
-                            notifyFail("nativeCollab", "Load failed: " + adError.getMessage());
+                            notifyFail("nativeCollab", adError.getMessage());
                         }
 
                         @Override
@@ -64,8 +63,12 @@ public class NativeAdLandManager extends BaseAdManager {
 
                         @Override
                         public void onAdClosed() {
-                            notifyClosed("nativeCollab", "Ad closed by system");
+                            notifyShowSuccess("nativeCollab");
                             hideAd();
+                        }
+                        @Override
+                        public void onAdImpression() {
+                            notifyAdImpression("nativeCollab");
                         }
                     })
                     .build();

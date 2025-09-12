@@ -98,7 +98,7 @@ public class NativeFullScreenManager extends BaseAdManager {
                         notifyAdLoaded("nativeFull");
 
                         showAdFull();
-                        notifyShowSuccess("nativeFull");
+
 //                        notifyAdImpression("nativeFull");
                     })
                     .withAdListener(new com.google.android.gms.ads.AdListener() {
@@ -107,8 +107,7 @@ public class NativeFullScreenManager extends BaseAdManager {
                             cancelTimeout();
                             if (!isLoadingTimeout) {
                                 hideLoadingScreen();
-                                notifyFail("nativeFull",
-                                        "Load failed native full: " + adError.getMessage());
+                                notifyFail("nativeFull", adError.getMessage());
                             }
                         }
 
@@ -124,7 +123,7 @@ public class NativeFullScreenManager extends BaseAdManager {
 
                         @Override
                         public void onAdClosed() {
-                            notifyClosed("nativeFull", "Ad closed by system native full");
+                            notifyShowSuccess("nativeFull");
                             hideAd();
                         }
 
@@ -257,7 +256,6 @@ public class NativeFullScreenManager extends BaseAdManager {
                     @Override
                     public void onAdClosed(String message) {
                         notifyClosed("nativeFull", message);
-                        hideAd();
                     }
 
                     @Override

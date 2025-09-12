@@ -10,9 +10,9 @@ import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.nativead.NativeAdView;
 
-public class NativeAdDefaultManager extends BaseAdManager {
+public class NativeAdSplashManager extends BaseAdManager {
 
-    public NativeAdDefaultManager(Activity activity) {
+    public NativeAdSplashManager(Activity activity) {
         super(activity);
     }
 
@@ -34,34 +34,36 @@ public class NativeAdDefaultManager extends BaseAdManager {
                             Log.i("AdRevenue", String.valueOf(micros));
 
                             // Chỉ gửi valueMicros sang Unity
-                            notifyAdRevenuePaid("nativeCollab", micros, currency);
+                            notifyAdRevenuePaid("nativeSplash", micros, currency);
                         });
 
-                        notifyAdLoaded("nativeCollab");
+                        notifyAdLoaded("nativeSplash");
                         showAd();
-                        notifyShowSuccess("nativeCollab");
-                        notifyAdImpression("nativeCollab");
+
                     })
                     .withAdListener(new com.google.android.gms.ads.AdListener() {
                         @Override
                         public void onAdFailedToLoad(com.google.android.gms.ads.LoadAdError adError) {
-                            notifyFail("nativeCollab", "Load failed: " + adError.getMessage());
+                            notifyFail("nativeSplash", adError.getMessage());
                         }
-
                         @Override
                         public void onAdClicked() {
-                            notifyClicked("nativeCollab", "Ad clicked");
+                            notifyClicked("nativeSplash", "Ad clicked");
                         }
 
                         @Override
                         public void onAdOpened() {
-                            notifyAdOpened("nativeCollab");
+                            notifyAdOpened("nativeSplash");
                         }
 
                         @Override
                         public void onAdClosed() {
-                            notifyClosed("nativeCollab", "Ad closed by system");
+                            notifyShowSuccess("nativeSplash");
                             hideAd();
+                        }
+                        @Override
+                        public void onAdImpression() {
+                            notifyAdImpression("nativeSplash");
                         }
                     })
                     .build();
@@ -131,13 +133,13 @@ public class NativeAdDefaultManager extends BaseAdManager {
                 activity.addContentView(adView, adLayoutParams);
             } catch (Exception e) {
                 e.printStackTrace();
-                notifyFail("nativeCollab", "Failed to add ad view: " + e.getMessage());
+                notifyFail("nativeSplash", "Failed to add ad view: " + e.getMessage());
             }
         }
 
         adViewLayout.setOnClickListener(v -> {
-            notifyClicked("nativeCollab", "Ad view clicked");
-            notifyAdOpened("nativeCollab");
+            notifyClicked("nativeSplash", "Ad view clicked");
+            notifyAdOpened("nativeSplash");
         });
     }
 
