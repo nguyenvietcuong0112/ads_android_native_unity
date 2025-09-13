@@ -17,6 +17,7 @@ public class NativeAdSplashManager extends BaseAdManager {
     }
 
     public void loadAd(String adUnitId, AdPosition position) {
+        hideAd();
         activity.runOnUiThread(() -> {
             // Tạo layout params trước khi load ad
             setupLayoutParams(position);
@@ -199,7 +200,6 @@ public class NativeAdSplashManager extends BaseAdManager {
                 }
             }
             adView = null;
-
             if (nativeAd != null) {
                 nativeAd.destroy();
                 nativeAd = null;
