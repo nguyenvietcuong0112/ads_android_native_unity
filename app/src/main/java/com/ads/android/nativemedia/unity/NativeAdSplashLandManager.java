@@ -90,8 +90,8 @@ public class NativeAdSplashLandManager extends BaseAdManager {
 
     private void setupLayoutParams(AdPosition position) {
         adLayoutParams = new FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT
+                300,
+                250
         );
 
         switch (position.getPosition()) {
@@ -165,8 +165,8 @@ public class NativeAdSplashLandManager extends BaseAdManager {
         activity.runOnUiThread(() -> {
             if (adView != null && adView.getParent() != null) {
                 FrameLayout.LayoutParams newParams = new FrameLayout.LayoutParams(
-                        FrameLayout.LayoutParams.MATCH_PARENT,
-                        FrameLayout.LayoutParams.WRAP_CONTENT
+                        300,
+                        250
                 );
 
                 switch (position.getPosition()) {
