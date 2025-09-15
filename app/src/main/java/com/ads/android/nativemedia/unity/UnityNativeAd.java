@@ -12,6 +12,7 @@ public class UnityNativeAd {
     private NativeAdManager nativeAdManager;
     private NativeAdLandManager nativeAdLandManager;
     private NativeAdSplashManager nativeAdSplashManager;
+    private NativeAdSplashLandManager nativeAdSplashLandManager;
 
     private NativeFullScreenManager nativeFullScreenManager;
     private NativeLandFullScreenManager nativeLandFullScreenManager;
@@ -24,6 +25,7 @@ public class UnityNativeAd {
         nativeAdManager = new NativeAdManager(activity);
         nativeAdSplashManager = new NativeAdSplashManager(activity);
         nativeAdLandManager = new NativeAdLandManager(activity); // Khởi tạo manager cho landscape
+        nativeAdSplashLandManager = new NativeAdSplashLandManager(activity);
         nativeFullScreenManager = new NativeFullScreenManager(activity);
         nativeLandFullScreenManager = new NativeLandFullScreenManager(activity);
     }
@@ -40,6 +42,7 @@ public class UnityNativeAd {
         nativeAdManager.setListener(listener);
         nativeAdLandManager.setListener(listener);
         nativeAdSplashManager.setListener(listener);
+        nativeAdSplashLandManager.setListener(listener);
         nativeFullScreenManager.setListener(listener);
         nativeLandFullScreenManager.setListener(listener);
         Log.d("setListener", "Successsssssssssssssssssssss");
@@ -62,14 +65,26 @@ public class UnityNativeAd {
         showNativeCollab(adUnitId, 0, 0, 0, mode);
     }
 
-    public void showNativeSplash(final String adUnitId, final int position, final int x, final int y) {
+    public void showNativeSplash(final String adUnitId, final int position, final int x, final int y, final int mode) {
         AdPosition adPosition = new AdPosition(position, x, y);
-        nativeAdSplashManager.loadAd(adUnitId, adPosition);
+        nativeAdSplashManager.loadAd(adUnitId, adPosition, mode);
     }
 
-    public void showNativeSplash(final String adUnitId) {
-        showNativeSplash(adUnitId, 0, 0, 0);
+    public void showNativeSplash(final String adUnitId, final int mode) {
+        showNativeSplash(adUnitId, 0, 0, 0, mode);
     }
+
+    // Methods for NativeAdSplashLandManager
+    public void showNativeSplashLand(final String adUnitId, final int position, final int x, final int y, final int mode) {
+        AdPosition adPosition = new AdPosition(position, x, y);
+        nativeAdSplashLandManager.loadAd(adUnitId, adPosition, mode);
+    }
+
+    public void showNativeSplashLand(final String adUnitId, final int mode) {
+        showNativeSplashLand(adUnitId, 0, 0, 0, mode);
+    }
+
+
 
 
     // Thêm các phương thức mới cho landscape
@@ -123,6 +138,12 @@ public class UnityNativeAd {
         nativeAdSplashManager.setAdPosition(adPosition);
     }
 
+    // set position for NativeAdSplashLandManager
+    public void setAdSplashLandPosition(final int position, final int x, final int y) {
+        AdPosition adPosition = new AdPosition(position, x, y);
+        nativeAdSplashLandManager.setAdPosition(adPosition);
+    }
+
 
     public void hideAdCollab() {
         nativeAdManager.hideAd();
@@ -130,6 +151,10 @@ public class UnityNativeAd {
 
     public void hideAdSplash() {
         nativeAdSplashManager.hideAd();
+    }
+
+    public void hideAdSplashLand() {
+        nativeAdSplashLandManager.hideAd();
     }
 
     public void hideAdNativeFull() {
@@ -150,6 +175,7 @@ public class UnityNativeAd {
         nativeAdManager.onDestroy();
         nativeAdSplashManager.onDestroy();
         nativeAdLandManager.onDestroy(); // Hủy cho landscape
+        nativeAdSplashLandManager.onDestroy();
         nativeFullScreenManager.onDestroy();
         nativeLandFullScreenManager.onDestroy();
         instance = null;

@@ -10,21 +10,19 @@ import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.nativead.NativeAdView;
 
-public class NativeAdSplashManager extends BaseAdManager {
+public class NativeAdSplashLandManager extends BaseAdManager {
 
     private int mode;
 
-    public NativeAdSplashManager(Activity activity) {
+    public NativeAdSplashLandManager(Activity activity) {
         super(activity);
     }
-
 
     // Helper method để maintain backward compatibility
     public void loadAd(String adUnitId, AdPosition position) {
         loadAd(adUnitId, position, 1);
     }
 
-    // Gửi mode sang Unity, chỉ khi loadAd
     public void loadAd(String adUnitId, AdPosition position, final int mode) {
         this.mode = mode;
         hideAd();
@@ -57,6 +55,7 @@ public class NativeAdSplashManager extends BaseAdManager {
                         public void onAdFailedToLoad(com.google.android.gms.ads.LoadAdError adError) {
                             notifyFail("nativeSplash", adError.getMessage());
                         }
+
                         @Override
                         public void onAdClicked() {
                             notifyClicked("nativeSplash", "Ad clicked");
@@ -72,6 +71,7 @@ public class NativeAdSplashManager extends BaseAdManager {
                             notifyShowSuccess("nativeSplash");
                             hideAd();
                         }
+
                         @Override
                         public void onAdImpression() {
                             notifyAdImpression("nativeSplash");
@@ -134,9 +134,9 @@ public class NativeAdSplashManager extends BaseAdManager {
 
         int layoutResId;
         if (mode == 2) {
-            layoutResId = R.layout.layout_native_splash2;
+            layoutResId = R.layout.layout_native_splash_land2;
         } else {
-            layoutResId = R.layout.layout_native_splash;
+            layoutResId = R.layout.layout_native_splash_land;
         }
 
         adView = LayoutInflater.from(activity).inflate(layoutResId, null);
@@ -144,7 +144,6 @@ public class NativeAdSplashManager extends BaseAdManager {
 
         // Setup ad views (headline, icon, CTA, etc.) - KHÔNG có close button
         AdViewHelper.setupNativeAdView(adViewLayout, nativeAd);
-
 
         if (adView != null && adLayoutParams != null) {
             try {
