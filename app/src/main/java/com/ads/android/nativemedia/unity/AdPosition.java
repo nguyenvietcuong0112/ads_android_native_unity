@@ -9,6 +9,9 @@ public class AdPosition {
     public static final int BOTTOM_LEFT = 5;
     public static final int BOTTOM_RIGHT = 6;
     public static final int CUSTOM = 7;
+    public static final int LEFT_CENTER  = 8;
+
+    public static final int RIGHT_CENTER = 9;
 
     private int position;
     private int x;

@@ -26,6 +26,7 @@ public class NativeAdSplashLandManager extends BaseAdManager {
     public void loadAd(String adUnitId, AdPosition position, final int mode) {
         this.mode = mode;
         hideAd();
+        canShow = true;
         activity.runOnUiThread(() -> {
             // Tạo layout params trước khi load ad
             setupLayoutParams(position);
@@ -34,7 +35,10 @@ public class NativeAdSplashLandManager extends BaseAdManager {
                     .forNativeAd(unifiedNativeAd -> {
                         if (nativeAd != null) nativeAd.destroy();
                         nativeAd = unifiedNativeAd;
-
+                        if(!canShow) {
+                            hideAd();
+                            return;
+                        }
                         nativeAd.setOnPaidEventListener(adValue -> {
                             long micros = adValue.getValueMicros();
                             String currency = adValue.getCurrencyCode();
@@ -89,9 +93,14 @@ public class NativeAdSplashLandManager extends BaseAdManager {
     }
 
     private void setupLayoutParams(AdPosition position) {
+        // Convert dp to pixels
+        float density = activity.getResources().getDisplayMetrics().density;
+        int widthInPx = (int) (350 * density);
+        int heightInPx = (int) (300 * density);
+
         adLayoutParams = new FrameLayout.LayoutParams(
-                300,
-                250
+                widthInPx,
+                heightInPx
         );
 
         switch (position.getPosition()) {
@@ -118,12 +127,19 @@ public class NativeAdSplashLandManager extends BaseAdManager {
                 break;
             case AdPosition.CUSTOM:
                 adLayoutParams.gravity = Gravity.TOP | Gravity.LEFT;
-                adLayoutParams.leftMargin = position.getX();
-                adLayoutParams.topMargin = position.getY();
+
+                break;
+            case AdPosition.LEFT_CENTER:
+                adLayoutParams.gravity = Gravity.LEFT | Gravity.CENTER_VERTICAL;
+                break;
+            case AdPosition.RIGHT_CENTER:
+                adLayoutParams.gravity = Gravity.RIGHT | Gravity.CENTER_VERTICAL;
                 break;
             default:
                 adLayoutParams.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
         }
+        adLayoutParams.leftMargin = position.getX();
+        adLayoutParams.topMargin = position.getY();
     }
 
     private void showAd() {
@@ -164,9 +180,14 @@ public class NativeAdSplashLandManager extends BaseAdManager {
     public void setAdPosition(AdPosition position) {
         activity.runOnUiThread(() -> {
             if (adView != null && adView.getParent() != null) {
+                // Convert dp to pixels
+                float density = activity.getResources().getDisplayMetrics().density;
+                int widthInPx = (int) (350 * density);
+                int heightInPx = (int) (300 * density);
+
                 FrameLayout.LayoutParams newParams = new FrameLayout.LayoutParams(
-                        300,
-                        250
+                        widthInPx,
+                        heightInPx
                 );
 
                 switch (position.getPosition()) {
@@ -193,13 +214,19 @@ public class NativeAdSplashLandManager extends BaseAdManager {
                         break;
                     case AdPosition.CUSTOM:
                         newParams.gravity = Gravity.TOP | Gravity.LEFT;
-                        newParams.leftMargin = position.getX();
-                        newParams.topMargin = position.getY();
+
+                        break;
+                    case AdPosition.LEFT_CENTER:
+                        newParams.gravity = Gravity.LEFT| Gravity.CENTER_VERTICAL;
+                        break;
+                    case AdPosition.RIGHT_CENTER:
+                        newParams.gravity = Gravity.RIGHT| Gravity.CENTER_VERTICAL;
                         break;
                     default:
                         newParams.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
                 }
-
+                newParams.leftMargin = position.getX();
+                newParams.topMargin = position.getY();
                 adView.setLayoutParams(newParams);
             }
         });
@@ -221,5 +248,7 @@ public class NativeAdSplashLandManager extends BaseAdManager {
                 nativeAd = null;
             }
         });
+        canShow = false;
     }
+    private boolean canShow = true;
 }
