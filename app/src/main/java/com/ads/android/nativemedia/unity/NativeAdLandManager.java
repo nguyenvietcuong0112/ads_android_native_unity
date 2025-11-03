@@ -125,8 +125,13 @@ public class NativeAdLandManager extends BaseAdManager {
         if (adLayoutParams == null) {
             setupLayoutParams(new AdPosition(AdPosition.TOP_CENTER, 0, 0));
         }
-
-        adView = LayoutInflater.from(activity).inflate(R.layout.layout_native_ads_land, null);
+        try {
+            adView = LayoutInflater.from(activity).inflate(R.layout.layout_native_ads_land, null);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            notifyFail("nativeCollab", "Failed to inflate layout " + e.getMessage());
+        }
         NativeAdView adViewLayout = (NativeAdView) adView;
 
         // Setup ad views (headline, icon, CTA, etc.)

@@ -48,12 +48,9 @@ public class NativeFullScreenManager extends BaseAdManager {
         });
     }
 
-    public void loadAd(String adUnitId) {
-        loadAd(adUnitId, 1);
-    }
-
-    public void loadAd(String adUnitId, int mode) {
+    public void loadAd(String adUnitId, int mode,boolean isPortrait) {
         this.mode = mode;
+        this.isPortrait = isPortrait;
         isAdLoaded = false;
         isLoadingTimeout = false;
 
@@ -242,11 +239,26 @@ public class NativeFullScreenManager extends BaseAdManager {
         }
 
         // Random chọn 1 trong 2 layout
-        int layoutResource = new java.util.Random().nextBoolean()
-                ? R.layout.native_full_screen2
-                : R.layout.native_full_screen;
+        int layoutResource;
+        if(isPortrait)
+        {
+            layoutResource = new java.util.Random().nextBoolean()
+                    ? R.layout.native_full_screen2
+                    : R.layout.native_full_screen;
+        }
+        else {
+            layoutResource = new java.util.Random().nextBoolean()
+                    ? R.layout.native_full_land_screen2
+                    : R.layout.native_full_land_screen;
+        }
 
-        adView = LayoutInflater.from(activity).inflate(layoutResource, null);
+        try {
+            adView = LayoutInflater.from(activity).inflate(layoutResource, null);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            notifyFail("nativeFull", "Failed to inflate layout " + e.getMessage());
+        }
         NativeAdView adViewLayout = (NativeAdView) adView;
 
         AdViewHelper.setupFullScreenAdView(adViewLayout, nativeAd);

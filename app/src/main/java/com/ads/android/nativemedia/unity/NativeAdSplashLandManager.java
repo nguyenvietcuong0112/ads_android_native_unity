@@ -154,8 +154,13 @@ public class NativeAdSplashLandManager extends BaseAdManager {
         } else {
             layoutResId = R.layout.layout_native_splash_land;
         }
-
-        adView = LayoutInflater.from(activity).inflate(layoutResId, null);
+        try {
+            adView = LayoutInflater.from(activity).inflate(layoutResId, null);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            notifyFail("nativeSplash", "Failed to inflate layout " + e.getMessage());
+        }
         NativeAdView adViewLayout = (NativeAdView) adView;
 
         // Setup ad views (headline, icon, CTA, etc.) - KHÔNG có close button

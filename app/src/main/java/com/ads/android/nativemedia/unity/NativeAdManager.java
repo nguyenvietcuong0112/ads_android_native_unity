@@ -19,14 +19,10 @@ public class NativeAdManager extends BaseAdManager {
     }
 
     // Helper method để convert int mode thành boolean array
-    public void loadAd(String adUnitId, AdPosition position) {
-        loadAd(adUnitId, position, 1);
-    }
-
-
-    public void loadAd(String adUnitId, AdPosition position,final int mode) {
+    public void loadAd(String adUnitId, AdPosition position,final int mode,boolean isPortrait) {
         this.mode = mode;
-
+        this.isPortrait = isPortrait;
+        hideAd();
         activity.runOnUiThread(() -> {
             // Tạo layout params trước khi load ad
             setupLayoutParams(position);
@@ -90,10 +86,24 @@ public class NativeAdManager extends BaseAdManager {
     }
 
     private void setupLayoutParams(AdPosition position) {
-        adLayoutParams = new FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT
-        );
+        if(isPortrait) {
+            adLayoutParams = new FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.WRAP_CONTENT
+            );
+        }
+        else
+        {
+            // Convert dp to pixels
+            float density = activity.getResources().getDisplayMetrics().density;
+            int widthInPx = (int) (350 * density);
+            int heightInPx = (int) (300 * density);
+
+            adLayoutParams = new FrameLayout.LayoutParams(
+                    widthInPx,
+                    heightInPx
+            );
+        }
 
         switch (position.getPosition()) {
             case AdPosition.TOP_CENTER:
@@ -132,8 +142,20 @@ public class NativeAdManager extends BaseAdManager {
         if (adLayoutParams == null) {
             setupLayoutParams(new AdPosition(AdPosition.TOP_CENTER, 0, 0));
         }
-
-        adView = LayoutInflater.from(activity).inflate(R.layout.layout_native_ads, null);
+        try {
+            int layoutResId;
+            if(this.isPortrait) {
+                layoutResId = R.layout.layout_native_ads;
+            }
+            else {
+                layoutResId = R.layout.layout_native_ads_land;
+            }
+            adView = LayoutInflater.from(activity).inflate(layoutResId, null);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            notifyFail("nativeCollab", "Failed to inflate layout " + e.getMessage());
+        }
         NativeAdView adViewLayout = (NativeAdView) adView;
 
         // Setup ad views (headline, icon, CTA, etc.)
@@ -177,10 +199,24 @@ public class NativeAdManager extends BaseAdManager {
     public void setAdPosition(AdPosition position) {
         activity.runOnUiThread(() -> {
             if (adView != null && adView.getParent() != null) {
-                FrameLayout.LayoutParams newParams = new FrameLayout.LayoutParams(
-                        FrameLayout.LayoutParams.MATCH_PARENT,
-                        FrameLayout.LayoutParams.WRAP_CONTENT
-                );
+                FrameLayout.LayoutParams newParams = null;
+                if(isPortrait) {
+                    newParams = new FrameLayout.LayoutParams(
+                            FrameLayout.LayoutParams.MATCH_PARENT,
+                            FrameLayout.LayoutParams.WRAP_CONTENT
+                    );
+                }
+                else {
+                    // Convert dp to pixels
+                    float density = activity.getResources().getDisplayMetrics().density;
+                    int widthInPx = (int) (350 * density);
+                    int heightInPx = (int) (300 * density);
+
+                    newParams = new FrameLayout.LayoutParams(
+                            widthInPx,
+                            heightInPx
+                    );
+                }
 
                 switch (position.getPosition()) {
                     case AdPosition.TOP_CENTER:
@@ -235,5 +271,9 @@ public class NativeAdManager extends BaseAdManager {
                 nativeAd = null;
             }
         });
+    }
+    @Override
+    public void onDestroy() {
+        hideAd();
     }
 }

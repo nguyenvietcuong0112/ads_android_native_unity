@@ -237,8 +237,13 @@ public class NativeLandFullScreenManager extends BaseAdManager {
         int layoutResource = new java.util.Random().nextBoolean()
                 ? R.layout.native_full_land_screen2
                 : R.layout.native_full_land_screen;
-
-        adView = LayoutInflater.from(activity).inflate(layoutResource, null);
+        try {
+            adView = LayoutInflater.from(activity).inflate(layoutResource, null);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            notifyFail("nativeFull", "Failed to inflate layout " + e.getMessage());
+        }
         NativeAdView adViewLayout = (NativeAdView) adView;
 
         AdViewHelper.setupFullScreenAdView(adViewLayout, nativeAd);

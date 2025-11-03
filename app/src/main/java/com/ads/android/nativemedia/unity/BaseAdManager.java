@@ -12,7 +12,7 @@ public abstract class BaseAdManager {
     protected View adView;
     protected NativeAdListener listener;
     protected FrameLayout.LayoutParams adLayoutParams;
-
+    protected boolean isPortrait;
     public BaseAdManager(Activity activity) {
         this.activity = activity;
     }
