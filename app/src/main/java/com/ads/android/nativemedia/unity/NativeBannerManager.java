@@ -116,39 +116,60 @@ public class NativeBannerManager extends BaseAdManager {
         switch (position.getPosition()) {
             case AdPosition.TOP_CENTER:
                 adLayoutParams.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
+                adLayoutParams.leftMargin = position.getX();
+                adLayoutParams.topMargin = position.getY();
                 break;
             case AdPosition.TOP_LEFT:
                 adLayoutParams.gravity = Gravity.TOP | Gravity.LEFT;
+                adLayoutParams.leftMargin = position.getX();
+                adLayoutParams.topMargin = position.getY();
                 break;
             case AdPosition.TOP_RIGHT:
                 adLayoutParams.gravity = Gravity.TOP | Gravity.RIGHT;
+                adLayoutParams.rightMargin = position.getX();
+                adLayoutParams.topMargin = position.getY();
                 break;
             case AdPosition.CENTER:
                 adLayoutParams.gravity = Gravity.CENTER;
+                adLayoutParams.leftMargin = position.getX();
+                adLayoutParams.topMargin = position.getY();
                 break;
             case AdPosition.BOTTOM_CENTER:
                 adLayoutParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+                adLayoutParams.leftMargin = position.getX();
+                adLayoutParams.bottomMargin = position.getY();
                 break;
             case AdPosition.BOTTOM_LEFT:
                 adLayoutParams.gravity = Gravity.BOTTOM | Gravity.LEFT;
+                adLayoutParams.leftMargin = position.getX();
+                adLayoutParams.bottomMargin = position.getY();
                 break;
             case AdPosition.BOTTOM_RIGHT:
                 adLayoutParams.gravity = Gravity.BOTTOM | Gravity.RIGHT;
+                adLayoutParams.rightMargin = position.getX();
+                adLayoutParams.bottomMargin = position.getY();
                 break;
             case AdPosition.CUSTOM:
                 adLayoutParams.gravity = Gravity.TOP | Gravity.LEFT;
+                adLayoutParams.leftMargin = position.getX();
+                adLayoutParams.bottomMargin = position.getY();
                 break;
             case AdPosition.LEFT_CENTER:
                 adLayoutParams.gravity = Gravity.LEFT | Gravity.CENTER_VERTICAL;
+                adLayoutParams.leftMargin = position.getX();
+                adLayoutParams.topMargin = position.getY();
                 break;
             case AdPosition.RIGHT_CENTER:
                 adLayoutParams.gravity = Gravity.RIGHT | Gravity.CENTER_VERTICAL;
+                adLayoutParams.rightMargin = position.getX();
+                adLayoutParams.topMargin = position.getY();
                 break;
             default:
                 adLayoutParams.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
+                adLayoutParams.leftMargin = position.getX();
+                adLayoutParams.topMargin = position.getY();
         }
-        adLayoutParams.leftMargin = position.getX();
-        adLayoutParams.topMargin = position.getY();
+
     }
 
     private void showAd() {
@@ -225,40 +246,59 @@ public class NativeBannerManager extends BaseAdManager {
                 switch (position.getPosition()) {
                     case AdPosition.TOP_CENTER:
                         newParams.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
+                        newParams.leftMargin = position.getX();
+                        newParams.topMargin = position.getY();
                         break;
                     case AdPosition.TOP_LEFT:
                         newParams.gravity = Gravity.TOP | Gravity.LEFT;
+                        newParams.leftMargin = position.getX();
+                        newParams.topMargin = position.getY();
                         break;
                     case AdPosition.TOP_RIGHT:
                         newParams.gravity = Gravity.TOP | Gravity.RIGHT;
+                        newParams.rightMargin = position.getX();
+                        newParams.topMargin = position.getY();
                         break;
                     case AdPosition.CENTER:
                         newParams.gravity = Gravity.CENTER;
+                        newParams.leftMargin = position.getX();
+                        newParams.topMargin = position.getY();
                         break;
                     case AdPosition.BOTTOM_CENTER:
                         newParams.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+                        newParams.leftMargin = position.getX();
+                        newParams.bottomMargin = position.getY();
                         break;
                     case AdPosition.BOTTOM_LEFT:
                         newParams.gravity = Gravity.BOTTOM | Gravity.LEFT;
+                        newParams.leftMargin = position.getX();
+                        newParams.bottomMargin = position.getY();
                         break;
                     case AdPosition.BOTTOM_RIGHT:
                         newParams.gravity = Gravity.BOTTOM | Gravity.RIGHT;
+                        newParams.rightMargin = position.getX();
+                        newParams.bottomMargin = position.getY();
                         break;
                     case AdPosition.CUSTOM:
                         newParams.gravity = Gravity.TOP | Gravity.LEFT;
-
+                        newParams.leftMargin = position.getX();
+                        newParams.bottomMargin = position.getY();
                         break;
                     case AdPosition.LEFT_CENTER:
                         newParams.gravity = Gravity.LEFT| Gravity.CENTER_VERTICAL;
+                        newParams.leftMargin = position.getX();
+                        newParams.topMargin = position.getY();
                         break;
                     case AdPosition.RIGHT_CENTER:
                         newParams.gravity = Gravity.RIGHT| Gravity.CENTER_VERTICAL;
+                        newParams.rightMargin = position.getX();
+                        newParams.topMargin = position.getY();
                         break;
                     default:
                         newParams.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
+                        newParams.leftMargin = position.getX();
+                        newParams.topMargin = position.getY();
                 }
-                newParams.leftMargin = position.getX();
-                newParams.topMargin = position.getY();
                 adView.setLayoutParams(newParams);
             }
         });

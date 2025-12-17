@@ -86,25 +86,10 @@ public class NativeAdManager extends BaseAdManager {
     }
 
     private void setupLayoutParams(AdPosition position) {
-        if(isPortrait) {
-            adLayoutParams = new FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.MATCH_PARENT,
-                    FrameLayout.LayoutParams.WRAP_CONTENT
-            );
-        }
-        else
-        {
-            // Convert dp to pixels
-            float density = activity.getResources().getDisplayMetrics().density;
-            int widthInPx = (int) (350 * density);
-            int heightInPx = (int) (300 * density);
-
-            adLayoutParams = new FrameLayout.LayoutParams(
-                    widthInPx,
-                    heightInPx
-            );
-        }
-
+        adLayoutParams = new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT
+        );
         switch (position.getPosition()) {
             case AdPosition.TOP_CENTER:
                 adLayoutParams.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
@@ -129,12 +114,18 @@ public class NativeAdManager extends BaseAdManager {
                 break;
             case AdPosition.CUSTOM:
                 adLayoutParams.gravity = Gravity.TOP | Gravity.LEFT;
-                adLayoutParams.leftMargin = position.getX();
-                adLayoutParams.topMargin = position.getY();
+                break;
+            case AdPosition.LEFT_CENTER:
+                adLayoutParams.gravity = Gravity.LEFT | Gravity.CENTER_VERTICAL;
+                break;
+            case AdPosition.RIGHT_CENTER:
+                adLayoutParams.gravity = Gravity.RIGHT | Gravity.CENTER_VERTICAL;
                 break;
             default:
                 adLayoutParams.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
         }
+        adLayoutParams.leftMargin = position.getX();
+        adLayoutParams.topMargin = position.getY();
     }
 
     private void showAd() {
@@ -144,7 +135,7 @@ public class NativeAdManager extends BaseAdManager {
         }
         try {
             int layoutResId;
-            if(this.isPortrait) {
+            if(isPortrait) {
                 layoutResId = R.layout.layout_native_ads;
             }
             else {
@@ -199,25 +190,10 @@ public class NativeAdManager extends BaseAdManager {
     public void setAdPosition(AdPosition position) {
         activity.runOnUiThread(() -> {
             if (adView != null && adView.getParent() != null) {
-                FrameLayout.LayoutParams newParams = null;
-                if(isPortrait) {
-                    newParams = new FrameLayout.LayoutParams(
-                            FrameLayout.LayoutParams.MATCH_PARENT,
-                            FrameLayout.LayoutParams.WRAP_CONTENT
-                    );
-                }
-                else {
-                    // Convert dp to pixels
-                    float density = activity.getResources().getDisplayMetrics().density;
-                    int widthInPx = (int) (350 * density);
-                    int heightInPx = (int) (300 * density);
-
-                    newParams = new FrameLayout.LayoutParams(
-                            widthInPx,
-                            heightInPx
-                    );
-                }
-
+                FrameLayout.LayoutParams newParams = new FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.MATCH_PARENT,
+                        FrameLayout.LayoutParams.WRAP_CONTENT
+                );
                 switch (position.getPosition()) {
                     case AdPosition.TOP_CENTER:
                         newParams.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
@@ -242,13 +218,19 @@ public class NativeAdManager extends BaseAdManager {
                         break;
                     case AdPosition.CUSTOM:
                         newParams.gravity = Gravity.TOP | Gravity.LEFT;
-                        newParams.leftMargin = position.getX();
-                        newParams.topMargin = position.getY();
+
+                        break;
+                    case AdPosition.LEFT_CENTER:
+                        newParams.gravity = Gravity.LEFT| Gravity.CENTER_VERTICAL;
+                        break;
+                    case AdPosition.RIGHT_CENTER:
+                        newParams.gravity = Gravity.RIGHT| Gravity.CENTER_VERTICAL;
                         break;
                     default:
                         newParams.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
                 }
-
+                newParams.leftMargin = position.getX();
+                newParams.topMargin = position.getY();
                 adView.setLayoutParams(newParams);
             }
         });
